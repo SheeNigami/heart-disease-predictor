@@ -6,9 +6,9 @@ crossorigin="anonymous">
        href="{{ url_for('static',filename='css/main.css')}}" />
 </head>
 <body>
+    {% include "includes/nav.html" %}
     <div class="container">
  
-        {% include "includes/nav.html" %}
  
         {% block content %}
         {% endblock %}
