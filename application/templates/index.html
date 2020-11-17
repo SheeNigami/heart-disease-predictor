@@ -3,5 +3,31 @@
 <!-- The block content replace the one encapsulated in  layout.html -->
 {% block content %}
 <div class="row">
-<h1>Hello World</h1>
+<div class="col-md-6 offset-md-3">
+<form name="frmPredict" action="/predict" method="post" novalidate>
+    <fieldset class="form-group">
+        <legend>{{title}}</legend>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.age.label }}<br>
+            {{ form.age(class_='form-control') }}
+        </p>
+        <p>
+            {{ form.height.label }}<br>
+            {{ form.height(class_='form-control') }}
+        </p>
+        <p>
+            {{ form.weight.label }}<br>
+            {{ form.weight(class_='form-control') }}
+        </p>
+        <div>
+            {{ form.gender }}
+        </div>
+        <p>
+            {{ form.submit(class_='form-control') }}
+        </p>
+    </fieldset>
+</form>
+</div>
+</div>
 {% endblock %}
