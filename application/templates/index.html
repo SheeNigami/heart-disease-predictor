@@ -11,18 +11,84 @@
         <p>
             {{ form.age.label }}<br>
             {{ form.age(class_='form-control') }}
+            {% for error in form.age.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
         </p>
         <p>
             {{ form.height.label }}<br>
             {{ form.height(class_='form-control') }}
+            {% for error in form.height.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
         </p>
         <p>
             {{ form.weight.label }}<br>
             {{ form.weight(class_='form-control') }}
+            {% for error in form.weight.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
         </p>
         <div>
-            {{ form.gender }}
+            {{ form.gender.label }}<br>
+            {{ form.gender(class_='form-control')}}
+            {% for error in form.gender.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
         </div>
+        <p class="mt-3">
+            {{ form.s_blood_pressure.label }}<br>
+            {{ form.s_blood_pressure(class_='form-control') }}
+            {% for error in form.s_blood_pressure.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.d_blood_pressure.label }}<br>
+            {{ form.d_blood_pressure(class_='form-control') }}
+            {% for error in form.d_blood_pressure.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.cholesterol.label }}<br>
+                {{ form.cholesterol(class_='form-control') }}
+                {% for error in form.cholesterol.errors %}
+                <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="col">
+                {{ form.glucose.label }}<br>
+                {{ form.glucose(class_='form-control') }}
+                {% for error in form.glucose.errors %}
+                <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form.smoking.label }}<br>
+                {{ form.smoking(class_='form-control') }}
+                {% for error in form.smoking.errors %}
+                <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="col">
+                {{ form.alcohol.label }}<br>
+                {{ form.alcohol(class_='form-control') }}
+                {% for error in form.alcohol.errors %}
+                <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <p class="mt-3">
+            {{ form.physical.label }}<br>
+            {{ form.physical(class_='form-control') }}
+            {% for error in form.physical.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
+        </p>
         <p>
             {{ form.submit(class_='form-control') }}
         </p>

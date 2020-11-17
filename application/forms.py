@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import FloatField, SubmitField, SelectField
+from wtforms import FloatField, SubmitField, SelectField, IntegerField
 from wtforms.validators import Length, InputRequired, ValidationError, NumberRange
  
 class PredictionForm(FlaskForm):
@@ -9,8 +9,8 @@ class PredictionForm(FlaskForm):
             validators=[InputRequired(), NumberRange(50,300)])
     weight = FloatField("Weight",
             validators=[InputRequired(), NumberRange(5,500)])
-    gender = SelectField("Gender", choices=[('Male', ''), ('Female', '')]
-            default=('Male', '') )
+    gender = SelectField("Gender", choices=[('Male', 'Male'), ('Female', 'Female')],
+            default=('Male', 'Male'))
     s_blood_pressure = IntegerField("Systolic blood pressure",
             validators=[InputRequired()])
     d_blood_pressure = IntegerField("Diastolic blood pressure", 
