@@ -33,8 +33,8 @@ def predict():
             physical = form.physical.data
             X = [[age, gender, height, weight, s_blood_pressure, d_blood_pressure, cholesterol, glucose, smoking, alcohol, physical]]
             result = ai_model.predict(X)
-            new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure,
-                               d_blood_pressure=d_blood_pressure, cholesterol=cholesterol, glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical)
+            new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure, d_blood_pressure=d_blood_pressure, 
+                               cholesterol=cholesterol, glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=result[0], predicted_on=datetime.utcnow())
             add_entry(new_entry)
             flash(f"Prediction: {display_result[result[0]]}", "Success")
         else:
@@ -47,6 +47,6 @@ def add_entry(new_entry):
         db.session.add(new_entry)
         db.session.commit()
         return new_entry.id
-    except Exception as Error:
+    except Exception as error:
         db.session.rollback()
         flash(error, 'danger')
