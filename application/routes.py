@@ -1,6 +1,8 @@
-from application import app
+from application import app, ai_model
 from flask import render_template, request, flash
 from application.forms import PredictionForm
+
+display_result = ['Cardiovascular Disease Absent', 'Cardiovascular Disease Present']
  
 #Handles http://127.0.0.1:5000/
 @app.route('/') 
@@ -27,7 +29,9 @@ def predict():
             smoking = form.smoking.data
             alcohol = form.alcohol.data
             physical = form.physical.data
-            flash(f"Prediction: ","success")
+            X = [[age, gender, height, weight, s_blood_pressure, d_blood_pressure, cholesterol, glucose, smoking, alcohol, physical]]
+            result = ai_model.predict(X)
+            flash(f"Prediction: {display_result[result[0]]}", "Success")
         else:
             flash("Error, cannot proceed with prediction","danger")
     return render_template("index.html", title="Enter Iris Parameters", form=form, index=True )
