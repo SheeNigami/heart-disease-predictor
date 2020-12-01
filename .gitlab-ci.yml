@@ -13,7 +13,6 @@ init:
   script:
     - apt-get update -qy
     - pip install -r requirements.txt
- 
 deploy_staging:
   stage: staging
   script:
