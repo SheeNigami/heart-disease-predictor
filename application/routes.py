@@ -36,7 +36,7 @@ def predict():
             X = [[age, gender, height, weight, s_blood_pressure, d_blood_pressure, cholesterol, glucose, smoking, alcohol, physical]]
             result = ai_model.predict(X)
             new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure, d_blood_pressure=d_blood_pressure, 
-                               cholesterol=cholesterol, glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=result[0], predicted_on=datetime.utcnow())
+                               cholesterol=cholesterol, glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=int(result[0]), predicted_on=datetime.utcnow())
             add_entry(new_entry)
             flash(f"Prediction: {display_result[result[0]]}", "Success")
         else:
