@@ -3,6 +3,7 @@ stages:
   - ver
   - init
   - staging
+  - production
 ver:
   stage: ver
   script:
@@ -16,7 +17,17 @@ init:
 deploy_staging:
   stage: staging
   script:
-  - apt-get update -qy
-  - apt-get install -y ruby-dev
-  - gem install dpl
-  - dpl --provider=heroku --app=dooa-2257-staging --key=$HEROKU_API_KEY
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=dooa-2257-staging --api_key=$HEROKU_API_KEY
+deploy_production:
+  stage: production
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=dooa-2257-production --api_key=$HEROKU_API_KEY
+  only:
+    - master
+  
