@@ -41,7 +41,17 @@ def predict():
             flash(f"Prediction: {display_result[result[0]]}", "Success")
         else:
             flash("Error, cannot proceed with prediction","danger")
-    return render_template("index.html", title="Enter Iris Parameters", form=form, index=True, entries=get_entries())
+    return render_template("index.html", title="Enter Parameters", form=form, index=True, entries=get_entries())
+
+
+@app.route('/remove', methods=['POST'])
+def remove():
+    form = PredictionForm()
+    req = request.form
+    id = req["id"]
+    remove_entry(id)
+    return render_template("index.html", title="Enter Parameters", form=form,
+                           entries=get_entries(), index=True)
 
 
 def add_entry(new_entry): 
@@ -62,3 +72,15 @@ def get_entries():
         db.session.rollback()
         flash(error, "danger")
         return 0
+
+
+def remove_entry(id): 
+    try:
+        entry = Entry.query.get(id)
+        db.session.delete(entry)
+        db.session.commit()
+    except Exception as error:
+        db.session.rollback()
+        flash(error, "danger")
+
+    

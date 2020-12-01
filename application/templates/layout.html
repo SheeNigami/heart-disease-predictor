@@ -7,7 +7,7 @@ crossorigin="anonymous">
 </head>
 <body>
     {% include "includes/nav.html" %}
-    <div class="container">
+    <div class="container-fluid">
         {% with messages = get_flashed_messages(with_categories=true)%}
             {% if messages %}
                 {% for category, message in messages %}

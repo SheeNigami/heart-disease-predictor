@@ -5,9 +5,9 @@ from wtforms.validators import Length, InputRequired, ValidationError, NumberRan
 class PredictionForm(FlaskForm):
     age = IntegerField("Age (in days)", 
             validators=[InputRequired(), NumberRange(0,50000)])
-    height = IntegerField("Height",
+    height = IntegerField("Height (cm)",
             validators=[InputRequired(), NumberRange(50,300)])
-    weight = FloatField("Weight",
+    weight = FloatField("Weight (kg)",
             validators=[InputRequired(), NumberRange(5,500)])
     gender = SelectField("Gender", choices=[(1, 'Woman'), (2, 'Men')],
             default=(1, 'Woman'))

@@ -3,97 +3,142 @@
 <!-- The block content replace the one encapsulated in  layout.html -->
 {% block content %}
 <div class="row">
-<div class="col-md-6 offset-md-3">
-<form name="frmPredict" action="/predict" method="post" novalidate>
-    <fieldset class="form-group">
-        <legend>{{title}}</legend>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.age.label }}<br>
-            {{ form.age(class_='form-control') }}
-            {% for error in form.age.errors %}
-            <span class="error-message">{{ error }}</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.height.label }}<br>
-            {{ form.height(class_='form-control') }}
-            {% for error in form.height.errors %}
-            <span class="error-message">{{ error }}</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.weight.label }}<br>
-            {{ form.weight(class_='form-control') }}
-            {% for error in form.weight.errors %}
-            <span class="error-message">{{ error }}</span>
-            {% endfor %}
-        </p>
-        <div>
-            {{ form.gender.label }}<br>
-            {{ form.gender(class_='form-control')}}
-            {% for error in form.gender.errors %}
-            <span class="error-message">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <p class="mt-3">
-            {{ form.s_blood_pressure.label }}<br>
-            {{ form.s_blood_pressure(class_='form-control') }}
-            {% for error in form.s_blood_pressure.errors %}
-            <span class="error-message">{{ error }}</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.d_blood_pressure.label }}<br>
-            {{ form.d_blood_pressure(class_='form-control') }}
-            {% for error in form.d_blood_pressure.errors %}
-            <span class="error-message">{{ error }}</span>
-            {% endfor %}
-        </p>
-        <div class="row mb-3">
-            <div class="col">
-                {{ form.cholesterol.label }}<br>
-                {{ form.cholesterol(class_='form-control') }}
-                {% for error in form.cholesterol.errors %}
-                <span class="error-message">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="col">
-                {{ form.glucose.label }}<br>
-                {{ form.glucose(class_='form-control') }}
-                {% for error in form.glucose.errors %}
-                <span class="error-message">{{ error }}</span>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                {{ form.smoking.label }}<br>
-                {{ form.smoking(class_='form-control') }}
-                {% for error in form.smoking.errors %}
-                <span class="error-message">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="col">
-                {{ form.alcohol.label }}<br>
-                {{ form.alcohol(class_='form-control') }}
-                {% for error in form.alcohol.errors %}
-                <span class="error-message">{{ error }}</span>
-                {% endfor %}
-            </div>
-        </div>
-        <p class="mt-3">
-            {{ form.physical.label }}<br>
-            {{ form.physical(class_='form-control') }}
-            {% for error in form.physical.errors %}
-            <span class="error-message">{{ error }}</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.submit(class_='form-control') }}
-        </p>
-    </fieldset>
-</form>
+    <div class="col-md-6 offset-md-3">
+        <form name="frmPredict" action="/predict" method="post" novalidate>
+            <fieldset class="form-group">
+                <legend>{{title}}</legend>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.age.label }}<br>
+                    {{ form.age(class_='form-control') }}
+                    {% for error in form.age.errors %}
+                    <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.height.label }}<br>
+                    {{ form.height(class_='form-control') }}
+                    {% for error in form.height.errors %}
+                    <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.weight.label }}<br>
+                    {{ form.weight(class_='form-control') }}
+                    {% for error in form.weight.errors %}
+                    <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </p>
+                <div>
+                    {{ form.gender.label }}<br>
+                    {{ form.gender(class_='form-control')}}
+                    {% for error in form.gender.errors %}
+                    <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <p class="mt-3">
+                    {{ form.s_blood_pressure.label }}<br>
+                    {{ form.s_blood_pressure(class_='form-control') }}
+                    {% for error in form.s_blood_pressure.errors %}
+                    <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.d_blood_pressure.label }}<br>
+                    {{ form.d_blood_pressure(class_='form-control') }}
+                    {% for error in form.d_blood_pressure.errors %}
+                    <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </p>
+                <div class="row mb-3">
+                    <div class="col">
+                        {{ form.cholesterol.label }}<br>
+                        {{ form.cholesterol(class_='form-control') }}
+                        {% for error in form.cholesterol.errors %}
+                        <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="col">
+                        {{ form.glucose.label }}<br>
+                        {{ form.glucose(class_='form-control') }}
+                        {% for error in form.glucose.errors %}
+                        <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{ form.smoking.label }}<br>
+                        {{ form.smoking(class_='form-control') }}
+                        {% for error in form.smoking.errors %}
+                        <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="col">
+                        {{ form.alcohol.label }}<br>
+                        {{ form.alcohol(class_='form-control') }}
+                        {% for error in form.alcohol.errors %}
+                        <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <p class="mt-3">
+                    {{ form.physical.label }}<br>
+                    {{ form.physical(class_='form-control') }}
+                    {% for error in form.physical.errors %}
+                    <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.submit(class_='form-control') }}
+                </p>
+            </fieldset>
+
+        </form>
+    </div>
 </div>
-</div>
+<hr>
+<table class="table table-stripe">
+    <tr>
+        <th>Age (in days)</th>
+        <th>Height (cm)</th>
+        <th>Weight (kg)</th>
+        <th>Gender</th>
+        <th>Systolic Blood Pressure</th>
+        <th>Diastolic Blood Pressure</th>
+        <th>Cholesterol</th>
+        <th>Glucose</th>
+        <th>Smoking</th>
+        <th>Alcohol Intake</th>
+        <th>Physical Activity</th>
+        <th>Prediction</th>
+        <th>Timestamp</th>
+        <th>Delete Prediction History</th>
+    </tr>
+    <tbdoy>
+    {% for entry in entries %}
+        <tr>
+            <td>{{ entry.age }}</td>
+            <td>{{ entry.height }}</td>
+            <td>{{ entry.weight }}</td>
+            <td>{{ entry.gender }}</td>
+            <td>{{ entry.s_blood_pressure }}</td>
+            <td>{{ entry.d_blood_pressure }}</td>
+            <td>{{ entry.cholesterol }}</td>
+            <td>{{ entry.glucose }}</td>
+            <td>{{ entry.smoking }}</td>
+            <td>{{ entry.alcohol }}</td>
+            <td>{{ entry.physical }}</td>
+            <td>{{ entry.prediction|int }}</td>
+            <td>{{ entry.predicted_on.strftime("%d %b %y %H:%M") }}</td>
+            <td>
+                <form name="frmRemoveEntry" action="/remove" method="post" novalidate>
+                    <input type="hidden" name="id" value="{{entry.id}}">
+                    <input type="submit" class="form-control btn-danger" value="Remove">
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbdoy>
+</table>
 {% endblock %}
