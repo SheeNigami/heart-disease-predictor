@@ -13,7 +13,9 @@ db.create_all()
 @app.route('/home') 
 def index_page(): 
     form1 = PredictionForm()
-    return render_template("index.html", form=form1, title="Enter Parameters")
+    return render_template("index.html", form=form1, 
+                           title="Enter Parameters", 
+                           entries = get_entries()) 
 
 @app.route("/predict", methods=['GET','POST'])
 def predict():
@@ -39,7 +41,7 @@ def predict():
             flash(f"Prediction: {display_result[result[0]]}", "Success")
         else:
             flash("Error, cannot proceed with prediction","danger")
-    return render_template("index.html", title="Enter Iris Parameters", form=form, index=True )
+    return render_template("index.html", title="Enter Iris Parameters", form=form, index=True, entries=get_entries())
 
 
 def add_entry(new_entry): 
@@ -50,3 +52,13 @@ def add_entry(new_entry):
     except Exception as error:
         db.session.rollback()
         flash(error, 'danger')
+
+
+def get_entries(): 
+    try:
+        entries = Entry.query.all()
+        return entries
+    except Exception as error:
+        db.session.rollback()
+        flash(error, "danger")
+        return 0
