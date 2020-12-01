@@ -1,0 +1,24 @@
+image: python:3.7.4
+stages:
+  - ver
+  - init
+  - staging
+ver:
+  stage: ver
+  script:
+    - python --version
+    - whoami
+init:
+  stage: init
+  script:
+    - apt-get update -qy
+    - pip install -r requirements.txt
+ 
+deploy_staging:
+  stage: staging
+  script:
+  - apt-get update -qy
+  - apt-get install -y ruby-dev
+  - gem install dpl
+  - dpl --provider=heroku --app=dooa-2257-staging 
+--api-key=$HEROKU_API_KEY
