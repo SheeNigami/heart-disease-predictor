@@ -11,6 +11,7 @@ if "TESTING" in os.environ:
     print("Using config for TESTING")
 elif "DEVELOPMENT" in os.environ:
     app.config.from_envvar('DEVELOPMENT')
+    print("Using config for DEVELOPMENT")
 else:
     app.config.from_pyfile('config_dply.cfg')
     print("Using config for deployment")
