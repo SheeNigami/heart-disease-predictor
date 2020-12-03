@@ -130,8 +130,12 @@ def get_entries():
 def remove_entry(id): 
     try:
         entry = Entry.query.get(id)
-        db.session.delete(entry)
-        db.session.commit()
+        if entry['predicted_user'] == current_user.username:
+            db.session.delete(entry)
+            db.session.commit()
+        else:
+            db.session.rollback()
+            flash("You are not looged in to the correct user", "danger")
     except Exception as error:
         db.session.rollback()
         flash(error, "danger")
