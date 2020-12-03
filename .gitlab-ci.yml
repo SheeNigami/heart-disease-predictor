@@ -23,14 +23,14 @@ deploy_staging:
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
-    - dpl --provider=heroku --app=dooa-2257-staging --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=ca1-2b11-sheenhern-staging --api-key=$HEROKU_API_KEY
 deploy_production:
   stage: production
   script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
-    - dpl --provider=heroku --app=dooa-2257-production --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=ca1-2b11-sheenhern-prod --api-key=$HEROKU_API_KEY
   only:
     - master
   
