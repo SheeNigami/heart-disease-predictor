@@ -43,14 +43,14 @@ def predict():
 
             X = [[age, gender, height, weight, s_blood_pressure, d_blood_pressure, cholesterol, glucose, smoking, alcohol, physical, bmi, avg_bp]]
             result = ai_model.predict(X)
-            print(ai_model.predict_proba(X))
+            probability = round(ai_model.predict_proba(X)[0][int(result[0])] * 100, 2)
             new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure, d_blood_pressure=d_blood_pressure, cholesterol=cholesterol, 
                                glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=int(result[0]), predicted_on=datetime.utcnow(), predicted_username=current_user.username)
             add_entry(new_entry)
             if result[0] == 0:
-                flash(f"Prediction: {display_result[result[0]]}", "success")
+                flash(f"Prediction: {display_result[result[0]]}, Probability: {probability}%", "success")
             else:
-                flash(f"Prediction: {display_result[result[0]]}", "danger")
+                flash(f"Prediction: {display_result[result[0]]}, Probability: {probability}%", "danger")
         else:
             flash("Error, cannot proceed with prediction", "danger")
     return render_template("index.html", title="Enter Parameters", form=form, index=True, entries=get_entries())
