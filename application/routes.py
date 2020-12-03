@@ -1,5 +1,5 @@
 from application import app, ai_model, db
-from flask import render_template, request, flash
+from flask import render_template, request, flash, json, jsonify
 from application.forms import PredictionForm
 from application.models import Entry
 from datetime import datetime
@@ -54,12 +54,43 @@ def remove():
                            entries=get_entries(), index=True)
 
 
+@app.route("/api/delete/<id>", methods=['GET'])
+def api_delete(id): 
+    entry = remove_entry(int(id))
+    return jsonify({'result': 'ok'})
+
+
+@app.route("/api/add", methods=['POST'])
+def api_add():
+    data = request.get_json()
+
+    age = data['age']
+    height = data['height']
+    weight = data['weight']
+    gender = data['gender']
+    s_blood_pressure = data['s_blood_pressure']
+    d_blood_pressure = data['d_blood_pressure']
+    cholesterol = data['cholesterol']
+    glucose = data['glucose']
+    smoking = data['smoking']
+    alcohol = data['alcohol']
+    physical = data['physical']
+    prediction = data['prediction']
+
+    new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure, d_blood_pressure=d_blood_pressure, 
+                        cholesterol=cholesterol, glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=prediction, predicted_on=datetime.utcnow())
+
+    result = add_entry(new_entry)
+    return jsonify({'id': result})
+
+
 def add_entry(new_entry): 
     try:
         db.session.add(new_entry)
         db.session.commit()
         return new_entry.id
     except Exception as error:
+        print(error)
         db.session.rollback()
         flash(error, 'danger')
 
