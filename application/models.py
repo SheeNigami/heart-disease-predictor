@@ -1,5 +1,6 @@
 from application import db
 import datetime as dt
+from sqlalchemy.orm import validates
 
 class Entry(db.Model): 
     __tablename__ = 'predictions'
@@ -19,3 +20,16 @@ class Entry(db.Model):
 
     prediction = db.Column(db.Integer)
     predicted_on = db.Column(db.DateTime, nullable=False)
+
+    @validates('s_blood_pressure')
+    def validate_sbp(self, key, s_blood_pressure): 
+        if s_blood_pressure <= 0:
+            raise AssertionError('Value must be positive')
+        return s_blood_pressure
+
+    @validates('d_blood_pressure')
+    def validate_sbp(self, key, d_blood_pressure): 
+        if d_blood_pressure <= 0:
+            raise AssertionError('Value must be positive')
+        return d_blood_pressure
+    
