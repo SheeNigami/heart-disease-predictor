@@ -33,7 +33,11 @@ def predict():
             smoking = form.smoking.data
             alcohol = form.alcohol.data
             physical = form.physical.data
-            X = [[age, gender, height, weight, s_blood_pressure, d_blood_pressure, cholesterol, glucose, smoking, alcohol, physical]]
+
+            bmi = weight / ((height/100) ** 2)
+            avg_bp = (s_blood_pressure + d_blood_pressure) / 2
+
+            X = [[age, gender, height, weight, s_blood_pressure, d_blood_pressure, cholesterol, glucose, smoking, alcohol, physical, bmi, avg_bp]]
             result = ai_model.predict(X)
             new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure, d_blood_pressure=d_blood_pressure, 
                                cholesterol=cholesterol, glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=int(result[0]), predicted_on=datetime.utcnow())
