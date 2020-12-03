@@ -22,7 +22,7 @@ def login():
             login_user(user)
             next_page = request.args.get('next')
             return redirect(next_page or url_for('main_bp.index_page'))
-        flash('Invalid username/password')
+        flash('Invalid username/password', 'danger')
         return redirect(url_for('auth_bp.login'))
             
     return render_template('login.html', form=form, title='Log in ',
@@ -44,7 +44,7 @@ def signup():
             db.session.commit()
             login_user(user)
             return redirect(url_for('main_bp.index_page'))
-        flash('A user already exists with this username')
+        flash('A user already exists with this username', 'danger')
 
     return render_template('signup.html', title='Create an Account.', form=form,
                            body='Signup for a user account.')
@@ -59,5 +59,5 @@ def load_user(user_id):
 
 @login_manager.unauthorized_handler
 def unauthorized():
-    flash('You must be logged in to view that page.')
+    flash('You must be logged in to view that page.', 'danger')
     return redirect(url_for('auth_bp.login'))

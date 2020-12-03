@@ -43,12 +43,15 @@ def predict():
 
             X = [[age, gender, height, weight, s_blood_pressure, d_blood_pressure, cholesterol, glucose, smoking, alcohol, physical, bmi, avg_bp]]
             result = ai_model.predict(X)
-            new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure, d_blood_pressure=d_blood_pressure, 
-                               cholesterol=cholesterol, glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=int(result[0]), predicted_on=datetime.utcnow())
+            new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure, d_blood_pressure=d_blood_pressure, cholesterol=cholesterol, 
+                               glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=int(result[0]), predicted_on=datetime.utcnow(), predicted_username=current_user.username)
             add_entry(new_entry)
-            flash(f"Prediction: {display_result[result[0]]}", "Success")
+            if result[0] == 0:
+                flash(f"Prediction: {display_result[result[0]]}", "success")
+            else:
+                flash(f"Prediction: {display_result[result[0]]}", "danger")
         else:
-            flash("Error, cannot proceed with prediction","danger")
+            flash("Error, cannot proceed with prediction", "danger")
     return render_template("index.html", title="Enter Parameters", form=form, index=True, entries=get_entries())
 
 
@@ -87,9 +90,10 @@ def api_add():
     alcohol = data['alcohol']
     physical = data['physical']
     prediction = data['prediction']
+    predicted_username = data['predicted_username']
 
-    new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure, d_blood_pressure=d_blood_pressure, 
-                        cholesterol=cholesterol, glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=prediction, predicted_on=datetime.utcnow())
+    new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure, d_blood_pressure=d_blood_pressure, cholesterol=cholesterol, 
+                       glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=prediction, predicted_on=datetime.utcnow(), predicted_username=predicted_username)
 
     result = add_entry(new_entry)
     return jsonify({'id': result})
@@ -115,7 +119,7 @@ def add_entry(new_entry):
 
 def get_entries(): 
     try:
-        entries = Entry.query.all()
+        entries = Entry.query.filter_by(predicted_username=current_user.username).all()
         return entries
     except Exception as error:
         db.session.rollback()

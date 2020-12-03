@@ -1,6 +1,7 @@
 from application import db
 import datetime as dt
 from sqlalchemy.orm import validates
+from sqlalchemy import ForeignKey
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -21,6 +22,7 @@ class Entry(db.Model):
     physical = db.Column(db.Integer)
 
     prediction = db.Column(db.Integer)
+    predicted_username = db.Column(db.String, ForeignKey('users.username'))
     predicted_on = db.Column(db.DateTime, nullable=False)
 
     @validates('s_blood_pressure')

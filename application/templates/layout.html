@@ -8,11 +8,16 @@ crossorigin="anonymous">
 <body>
     {% include "includes/nav.html" %}
     <div class="container-fluid">
-        {% for message in get_flashed_messages() %}
-            <div class="alert alert-warning">
-                {{ message }}
-            </div>
-        {% endfor %}
+        {% with messages = get_flashed_messages(with_categories=true)%}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{category}}">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
  
         {% block content %}
         {% endblock %}
