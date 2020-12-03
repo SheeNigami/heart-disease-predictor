@@ -1,0 +1,45 @@
+<!-- Inherits from layout.html -->
+{% extends "layout.html" %}
+<!-- The block content replace the one encapsulated in  layout.html -->
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h1>Log In</h1>
+
+        <form method="POST" action="/login">
+            {{ form.csrf_token }}
+
+            <fieldset class="form-group">
+                <p>
+                    {{ form.username.label }}<br>
+                    {{ form.username(class_='form-control') }}
+                    {% for error in form.username.errors %}
+                    <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </p>
+
+                <p>
+                    {{ form.password.label }}<br>
+                    {{ form.password(class_='form-control') }}
+                    {% for error in form.password.errors %}
+                    <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </p>
+
+                <p>
+                    {{ form.submit(class_='form-control') }}
+                </p>
+            </fieldset>
+
+
+            <div class="login-signup">
+            <span>Don't have an account?</span>
+            <a href="{{ url_for('auth_bp.signup') }}">Sign up.</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}
