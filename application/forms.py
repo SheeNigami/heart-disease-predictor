@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import FloatField, SubmitField, SelectField, IntegerField
-from wtforms.validators import Length, InputRequired, ValidationError, NumberRange
+from wtforms import FloatField, SubmitField, SelectField, IntegerField, StringField, PasswordField
+from wtforms.validators import Length, InputRequired, ValidationError, NumberRange, DataRequired 
  
 class PredictionForm(FlaskForm):
     age = IntegerField("Age (in days)", 
@@ -26,3 +26,15 @@ class PredictionForm(FlaskForm):
     physical = SelectField('Physical Activity', 
             default=(0, "No"), choices=[(0, "No"), (1, 'Yes')])
     submit = SubmitField("Predict")
+
+
+class SignupForm(FlaskForm): 
+        username = StringField('Username', validators=[DataRequired()])
+        password = PasswordField('Password', validators=[DataRequired(), Length(min=6, message='Please use a stronger password!')])
+        submit = SubmitField('Register')
+
+
+class LoginForm(FlaskForm): 
+        username = StringField('Username', validators=[DataRequired()])
+        password = PasswordField('Password', validators=[DataRequired()])
+        submit = SubmitField('Login')

@@ -1,23 +1,27 @@
 from application import app, ai_model, db
-from flask import render_template, request, flash, json, jsonify
+from flask import render_template, request, flash, json, jsonify, Blueprint, url_for, redirect
+from flask_login import current_user, login_required, logout_user
 from application.forms import PredictionForm
 from application.models import Entry
 from datetime import datetime
 
 display_result = ['Cardiovascular Disease Absent', 'Cardiovascular Disease Present']
 db.create_all()
+main_bp = Blueprint('main_bp', __name__, template_folder='templates', static_folder='static')
  
 #Handles http://127.0.0.1:5000/
-@app.route('/') 
-@app.route('/index') 
-@app.route('/home') 
+@main_bp.route('/') 
+@main_bp.route('/index') 
+@main_bp.route('/home') 
+@login_required
 def index_page(): 
     form1 = PredictionForm()
     return render_template("index.html", form=form1, 
                            title="Enter Parameters", 
                            entries = get_entries()) 
 
-@app.route("/predict", methods=['GET','POST'])
+@main_bp.route("/predict", methods=['GET','POST'])
+@login_required
 def predict():
     form = PredictionForm()
     if request.method == 'POST':
@@ -48,7 +52,8 @@ def predict():
     return render_template("index.html", title="Enter Parameters", form=form, index=True, entries=get_entries())
 
 
-@app.route('/remove', methods=['POST'])
+@main_bp.route('/remove', methods=['POST'])
+@login_required
 def remove():
     form = PredictionForm()
     req = request.form
@@ -58,13 +63,15 @@ def remove():
                            entries=get_entries(), index=True)
 
 
-@app.route("/api/delete/<id>", methods=['GET'])
+@main_bp.route("/api/delete/<id>", methods=['GET'])
+@login_required
 def api_delete(id): 
     entry = remove_entry(int(id))
     return jsonify({'result': 'ok'})
 
 
-@app.route("/api/add", methods=['POST'])
+@main_bp.route("/api/add", methods=['POST'])
+@login_required
 def api_add():
     data = request.get_json()
 
@@ -86,6 +93,13 @@ def api_add():
 
     result = add_entry(new_entry)
     return jsonify({'id': result})
+
+
+@main_bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('auth_bp.login'))
 
 
 def add_entry(new_entry): 
