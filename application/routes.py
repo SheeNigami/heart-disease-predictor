@@ -43,6 +43,7 @@ def predict():
 
             X = [[age, gender, height, weight, s_blood_pressure, d_blood_pressure, cholesterol, glucose, smoking, alcohol, physical, bmi, avg_bp]]
             result = ai_model.predict(X)
+            print(ai_model.predict_proba(X))
             new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure, d_blood_pressure=d_blood_pressure, cholesterol=cholesterol, 
                                glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=int(result[0]), predicted_on=datetime.utcnow(), predicted_username=current_user.username)
             add_entry(new_entry)
@@ -146,7 +147,7 @@ def get_entries():
 def remove_entry(id): 
     try:
         entry = Entry.query.get(id)
-        if entry['predicted_user'] == current_user.username:
+        if entry.predicted_username == current_user.username:
             db.session.delete(entry)
             db.session.commit()
         else:
