@@ -118,8 +118,24 @@ def add_entry(new_entry):
 
 
 def get_entries(): 
+    gender_lookup = {1: 'Woman', 2: 'Man'}
+    cholesterol_lookup = {1:'Normal', 2:'Above Normal', 3:'Well Above Normal'}
+    glucose_lookup = {1:'Normal', 2:'Above Normal', 3:'Well Above Normal'}
+    smoking_lookup = {0:'No', 1:'Yes'}
+    alcohol_lookup = {0:'No', 1:'Yes'}
+    physical_lookup = {0:'No', 1:'Yes'}
+    prediction_lookup = {0: 'Absent', 1: 'Present'}
     try:
         entries = Entry.query.filter_by(predicted_username=current_user.username).all()
+        for i in range(len(entries)): 
+            entries[i].gender = gender_lookup[entries[i].gender]
+            entries[i].cholesterol = cholesterol_lookup[entries[i].cholesterol]
+            entries[i].glucose = glucose_lookup[entries[i].glucose]
+            entries[i].smoking = smoking_lookup[entries[i].smoking]
+            entries[i].alcohol = alcohol_lookup[entries[i].alcohol]
+            entries[i].physical = physical_lookup[entries[i].physical]
+            entries[i].prediction = prediction_lookup[entries[i].prediction]
+            
         return entries
     except Exception as error:
         db.session.rollback()
