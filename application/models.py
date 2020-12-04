@@ -25,17 +25,43 @@ class Entry(db.Model):
     predicted_username = db.Column(db.String, ForeignKey('users.username'))
     predicted_on = db.Column(db.DateTime, nullable=False)
 
-    @validates('s_blood_pressure')
-    def validate_sbp(self, key, s_blood_pressure): 
-        if s_blood_pressure <= 0:
-            raise AssertionError('Value must be positive')
-        return s_blood_pressure
+    # Check label encoded variables
+    @validates('gender')
+    def validate_gender(self, key, gender):
+        if not (gender == 0 or gender == 1):
+            raise AssertionError('Value must be 0 or 1 (female or male)')
 
-    @validates('d_blood_pressure')
-    def validate_sbp(self, key, d_blood_pressure): 
-        if d_blood_pressure <= 0:
-            raise AssertionError('Value must be positive')
-        return d_blood_pressure
+    @validates('cholesterol')
+    def validate_cholesterol(self, key, cholesterol):
+        if not (cholesterol == 1 or cholesterol == 2 or cholesterol == 3):
+            raise AssertionError('Value must be 1/2/3')
+
+    @validates('glucose')
+    def validate_glucose(self, key, glucose):
+        if not (glucose == 1 or glucose == 2 or glucose == 3):
+            raise AssertionError('Value must be 1/2/3')
+
+    @validates('smoking')
+    def validate_smoking(self, key, smoking)
+        if not (smoking == 0 or smoking == 1):
+            raise AssertionError("Value must be 0 or 1 (smoke or don't smoke)")
+    
+    @validates('alcohol')
+    def validates_alcohol(self, key, alcohol)
+        if not (alcohol == 0 or alcohol == 1):
+            raise AssertionError("Value must be 0 or 1 (drink alcohol or not)")
+
+    @validates('physical')
+        if not (physical == 0 or physical == 1):
+            raise AssertionError("Value must be 0 or 1 (exercise or not)")
+
+    @validates('prediction')
+        if not (prediction == 0 or prediction == 1):
+            raise AssertionError("Value must be 0 or 1 (heart disease absent/present)")
+
+
+
+
 
 
 class User(UserMixin, db.Model):

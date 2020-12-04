@@ -13,7 +13,6 @@ from flask import json
 #3: Write the test function pass in the arguments
 def test_EntryClass(entrylist,capsys):
     with capsys.disabled():
-        print(entrylist)
         now = datetime.datetime.utcnow()
         new_entry = Entry(  age= entrylist[0], 
                             height = entrylist[1],

@@ -38,6 +38,7 @@ def predict():
             alcohol = form.alcohol.data
             physical = form.physical.data
 
+            # Engineer feature engineered columns
             bmi = weight / ((height/100) ** 2)
             avg_bp = (s_blood_pressure + d_blood_pressure) / 2
 
@@ -68,14 +69,12 @@ def remove():
 
 
 @main_bp.route("/api/delete/<id>", methods=['GET'])
-@login_required
 def api_delete(id): 
     entry = remove_entry(int(id))
     return jsonify({'result': 'ok'})
 
 
 @main_bp.route("/api/add", methods=['POST'])
-@login_required
 def api_add():
     data = request.get_json()
 
@@ -98,6 +97,19 @@ def api_add():
 
     result = add_entry(new_entry)
     return jsonify({'id': result})
+
+
+@main_bp.route('/api/getAllEntry')
+def get_all_entry():
+    try:
+        entries = Entry.query.all()
+        return jsonify(entries)
+    except Exception as error:
+        db.session.rollback()
+        flash(error, "danger")
+        return 0
+
+
 
 
 @main_bp.route('/logout')
