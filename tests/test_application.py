@@ -161,6 +161,29 @@ def test_getAllEntryAPI(client, capsys):
     assert response.status_code == 200
     assert response.headers['Content-Type'] == "application/json"
 
-# Test predict api (consistency testing)
-# def test_predictAPI(client, capsys): 
+# Test predict api (consistency testing, always absent;)
+@pytest.mark.parametrize("entrylist",[
+    [13337, 180, 80,  1, 90, 70, 1, 1, 1, 1, 2] # Test basic integers
+])
+def test_predictAPI(client, capsys): 
+    with capsys.disabled():
+        data = {  'age': entrylist[0], 
+                  'height' : entrylist[1],
+                  'weight': entrylist[2],
+                  'gender' : entrylist[3],
+                  's_blood_pressure' : entrylist[4],  
+                  'd_blood_pressure' : entrylist[5],
+                  'cholesterol' : entrylist[6],
+                  'glucose' : entrylist[7], 
+                  'smoking' : entrylist[8], 
+                  'alcohol' : entrylist[9], 
+                  'physical' : entrylist[10] }
+
+        response = client.post('/api/predict', data=json.dumps(data), content_type="application/json")
+
+        assert response.status_code == 200
+        assert response.headers["Content-Type"] == "application/json"
+        response_body = json.loads(response.get_data(as_text=True))
+        assert response_body["result"] == 0
+        assert response_body["probability"]
 

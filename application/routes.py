@@ -110,6 +110,35 @@ def get_all_entry():
         return 0
 
 
+@main_bp.route('/api/predict')
+def api_predict(): 
+    data = request.get_json()
+
+    age = data['age']
+    height = data['height']
+    weight = data['weight']
+    gender = data['gender']
+    s_blood_pressure = data['s_blood_pressure']
+    d_blood_pressure = data['d_blood_pressure']
+    cholesterol = data['cholesterol']
+    glucose = data['glucose']
+    smoking = data['smoking']
+    alcohol = data['alcohol']
+    physical = data['physical']
+
+    # Engineer feature engineered columns
+    bmi = weight / ((height/100) ** 2)
+    avg_bp = (s_blood_pressure + d_blood_pressure) / 2
+
+    X = [[age, gender, height, weight, s_blood_pressure, d_blood_pressure, cholesterol, glucose, smoking, alcohol, physical, bmi, avg_bp]]
+    result = ai_model.predict(X)
+    probability = ai_model.predict_proba(X)[0][int(result[0])] * 100
+
+    return jsonify({
+        'result': result,
+        'probability': probability
+    })
+
 
 
 @main_bp.route('/logout')
