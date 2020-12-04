@@ -28,8 +28,8 @@ class Entry(db.Model):
     # Check label encoded variables
     @validates('gender')
     def validate_gender(self, key, gender):
-        if not (gender == 0 or gender == 1):
-            raise AssertionError('Value must be 0 or 1 (female or male)')
+        if not (gender == 1 or gender == 2):
+            raise AssertionError('Value must be 1 or 2 (female or male)')
         return gender
 
     @validates('cholesterol')

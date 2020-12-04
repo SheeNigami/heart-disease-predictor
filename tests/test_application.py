@@ -119,7 +119,7 @@ def test_UserClassFail(userlist, capsys):
 # Test add API (range testing)
 @pytest.mark.parametrize("entrylist",[
     [17171, 171, 71,  1, 171, 71, 1, 1, 1, 1, 1, 0, 'sheen'], # Test basic integers
-    [13337, 173, 73,  0, 73, 73, 1, 1, 1, 1, 1, 0, 'asdfasdf'] # Test basic integers
+    [13337, 173, 73,  2, 73, 73, 1, 1, 1, 1, 1, 0, 'asdfasdf'] # Test basic integers
 ])
 def test_addAPI(client, entrylist, capsys):
     with capsys.disabled():
