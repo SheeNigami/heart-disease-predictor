@@ -44,7 +44,7 @@ def test_EntryClass(entrylist,capsys):
         assert new_entry.predicted_on == now
 
 
-# Expected Failsure testing for Entry class
+# Expected Failsure testing for Entry class (range testing)
 @pytest.mark.xfail(reason='unexpected values in label encoded fields')
 @pytest.mark.parametrize("entrylist",[
     [21.1, 200.2, 80.3, 0.4, 1.1, 70.7, 88.8, 1.1, 1.1, 1.9, 1.1, 2.1, 1.1]   #Test float arguments
@@ -116,12 +116,11 @@ def test_UserClass(userlist, capsys):
         assert new_user.password == userlist[1]
 
 
-# Test add API
+# Test add API (range testing)
 @pytest.mark.parametrize("entrylist",[
-    [18000, 170, 70,  1, 100, 80, 1, 1, 1, 1, 2, 0],  #Test integer arguments
-    [21.1, 200.2, 80.3, 0.4, 1.1, 70.7, 88.8, 1.1, 1.1, 1.9, 1.1, 2.1, 1.1]   #Test float arguments
+    [17171, 171, 71,  1, 171, 71, 1, 1, 1, 1, 2, 0], # Test basic integers
+    [13337, 173, 73,  0, 73, 73, 1, 1, 1, 1, 2, 0] # Test basic integers
 ])
-
 def test_addAPI(client, entrylist, capsys):
     with capsys.disabled():
         data = {  'age': entrylist[0], 
@@ -144,7 +143,7 @@ def test_addAPI(client, entrylist, capsys):
         response_body = json.loads(response.get_data(as_text=True))
         assert response_body["id"]
 
-
+ # Test delete API (Delete added entries)
 @pytest.mark.parametrize("id", [1,2])
 def test_deleteAPI(client, id, capsys): 
     with capsys.disabled():
@@ -155,10 +154,13 @@ def test_deleteAPI(client, id, capsys):
         response_body = json.loads(response.get_data(as_text=True))
         assert response_body['result'] == 'ok'
 
-
+# Test getAllEntry api
 def test_getAllEntryAPI(client, capsys):
     response = client.get('/api/getAllEntry')
     ret = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
     assert response.headers['Content-Type'] == "application/json"
-    assert 
+
+# Test predict api (consistency testing)
+# def test_predictAPI(client, capsys): 
+
