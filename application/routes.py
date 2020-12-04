@@ -45,11 +45,8 @@ def predict():
             X = [[age, gender, height, weight, s_blood_pressure, d_blood_pressure, cholesterol, glucose, smoking, alcohol, physical, bmi, avg_bp]]
             result = ai_model.predict(X)
             probability = round(ai_model.predict_proba(X)[0][int(result[0])] * 100, 2)
-            print(gender)
             new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure, d_blood_pressure=d_blood_pressure, cholesterol=cholesterol, 
                                glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=int(result[0]), predicted_on=datetime.utcnow(), predicted_username=current_user.username)
-            new_entry.gender = gender
-            print(new_entry.gender)
             add_entry(new_entry)
             if result[0] == 0:
                 flash(f"Prediction: {display_result[result[0]]}, Probability: {probability}%", "success")
@@ -66,9 +63,13 @@ def remove():
     form = PredictionForm()
     req = request.form
     id = req["id"]
-    remove_entry(id)
-    return render_template("index.html", title="Enter Parameters", form=form,
-                           entries=get_entries(), index=True)
+    if entry.predicted_username == current_user.username:
+        remove_entry(id)
+        return render_template("index.html", title="Enter Parameters", form=form,
+                            entries=get_entries(), index=True)
+    else:
+            flash("You are not looged in to the correct user", "danger")
+
 
 
 @main_bp.route("/api/delete/<id>", methods=['GET'])
@@ -102,7 +103,7 @@ def api_add():
     return jsonify({'id': result})
 
 
-@main_bp.route('/api/getAllEntry')
+@main_bp.route('/api/getAllEntry', methods=['GET'])
 def get_all_entry():
     try:
         entries = Entry.query.all()
@@ -113,7 +114,7 @@ def get_all_entry():
         return 0
 
 
-@main_bp.route('/api/predict')
+@main_bp.route('/api/predict', methods=['POST'])
 def api_predict(): 
     data = request.get_json()
 
@@ -138,7 +139,7 @@ def api_predict():
     probability = ai_model.predict_proba(X)[0][int(result[0])] * 100
 
     return jsonify({
-        'result': result,
+        'result': int(result[0]),
         'probability': probability
     })
 
@@ -191,12 +192,8 @@ def get_entries():
 def remove_entry(id): 
     try:
         entry = Entry.query.get(id)
-        if entry.predicted_username == current_user.username:
-            db.session.delete(entry)
-            db.session.commit()
-        else:
-            db.session.rollback()
-            flash("You are not looged in to the correct user", "danger")
+        db.session.delete(entry)
+        db.session.commit()
     except Exception as error:
         db.session.rollback()
         flash(error, "danger")

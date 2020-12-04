@@ -92,8 +92,8 @@ def test_EntryClassFail(entrylist,capsys):
 def test_UserClass(userlist, capsys):
     with capsys.disabled():
         now = datetime.datetime.utcnow()
-        new_user = User(  username= entrylist[0], 
-                          password = entrylist[1],
+        new_user = User(  username= userlist[0], 
+                          password = userlist[1],
                           created_on = now  ) 
  
         assert new_user.username == userlist[0]
@@ -118,8 +118,8 @@ def test_UserClassFail(userlist, capsys):
 
 # Test add API (range testing)
 @pytest.mark.parametrize("entrylist",[
-    [17171, 171, 71,  1, 171, 71, 1, 1, 1, 1, 2, 0, 'sheen'], # Test basic integers
-    [13337, 173, 73,  0, 73, 73, 1, 1, 1, 1, 2, 0, 'asdfasdf'] # Test basic integers
+    [17171, 171, 71,  1, 171, 71, 1, 1, 1, 1, 1, 0, 'sheen'], # Test basic integers
+    [13337, 173, 73,  0, 73, 73, 1, 1, 1, 1, 1, 0, 'asdfasdf'] # Test basic integers
 ])
 def test_addAPI(client, entrylist, capsys):
     with capsys.disabled():

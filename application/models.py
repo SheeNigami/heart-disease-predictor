@@ -1,7 +1,7 @@
 from application import db
 import datetime as dt
 from sqlalchemy.orm import validates
-from sqlalchemy import ForeignKey, Integer, Float, String
+from sqlalchemy import ForeignKey
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -30,36 +30,43 @@ class Entry(db.Model):
     def validate_gender(self, key, gender):
         if not (gender == 0 or gender == 1):
             raise AssertionError('Value must be 0 or 1 (female or male)')
+        return gender
 
     @validates('cholesterol')
     def validate_cholesterol(self, key, cholesterol):
         if not (cholesterol == 1 or cholesterol == 2 or cholesterol == 3):
-            raise AssertionError('Value must be 1/2/3')
+            raise AssertionError('Value must be 1/2/3')            
+        return cholesterol
 
     @validates('glucose')
     def validate_glucose(self, key, glucose):
         if not (glucose == 1 or glucose == 2 or glucose == 3):
             raise AssertionError('Value must be 1/2/3')
+        return glucose
 
     @validates('smoking')
     def validate_smoking(self, key, smoking):
         if not (smoking == 0 or smoking == 1):
             raise AssertionError("Value must be 0 or 1 (smoke or don't smoke)")
+        return smoking
     
     @validates('alcohol')
     def validates_alcohol(self, key, alcohol):
         if not (alcohol == 0 or alcohol == 1):
             raise AssertionError("Value must be 0 or 1 (drink alcohol or not)")
+        return alcohol
 
     @validates('physical')
     def validates_physical(self, key , physical): 
         if not (physical == 0 or physical == 1):
             raise AssertionError("Value must be 0 or 1 (exercise or not)")
+        return physical
 
     @validates('prediction')
     def validates_prediction(self, key , prediction): 
         if not (prediction == 0 or prediction == 1):
             raise AssertionError("Value must be 0 or 1 (heart disease absent/present)")
+        return prediction
 
 
 class User(UserMixin, db.Model):
