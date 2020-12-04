@@ -42,12 +42,12 @@ class Entry(db.Model):
             raise AssertionError('Value must be 1/2/3')
 
     @validates('smoking')
-    def validate_smoking(self, key, smoking)
+    def validate_smoking(self, key, smoking):
         if not (smoking == 0 or smoking == 1):
             raise AssertionError("Value must be 0 or 1 (smoke or don't smoke)")
     
     @validates('alcohol')
-    def validates_alcohol(self, key, alcohol)
+    def validates_alcohol(self, key, alcohol):
         if not (alcohol == 0 or alcohol == 1):
             raise AssertionError("Value must be 0 or 1 (drink alcohol or not)")
 
