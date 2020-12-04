@@ -63,12 +63,9 @@ def remove():
     form = PredictionForm()
     req = request.form
     id = req["id"]
-    if entry.predicted_username == current_user.username:
-        remove_entry(id)
-        return render_template("index.html", title="Enter Parameters", form=form,
-                            entries=get_entries(), index=True)
-    else:
-            flash("You are not looged in to the correct user", "danger")
+    remove_entry(id)
+    return render_template("index.html", title="Enter Parameters", form=form,
+                        entries=get_entries(), index=True)
 
 
 
@@ -173,16 +170,27 @@ def get_entries():
     prediction_lookup = {0: 'Absent', 1: 'Present'}
     try:
         entries = Entry.query.filter_by(predicted_username=current_user.username).all()
+        to_return = []
         for i in range(len(entries)): 
-            entries[i].gender = gender_lookup[entries[i].gender]
-            entries[i].cholesterol = cholesterol_lookup[entries[i].cholesterol]
-            entries[i].glucose = glucose_lookup[entries[i].glucose]
-            entries[i].smoking = smoking_lookup[entries[i].smoking]
-            entries[i].alcohol = alcohol_lookup[entries[i].alcohol]
-            entries[i].physical = physical_lookup[entries[i].physical]
-            entries[i].prediction = prediction_lookup[entries[i].prediction]
+            to_append = {}
+            to_append['id'] = entries[i].id
+            to_append['age'] = entries[i].age
+            to_append['height'] = entries[i].height
+            to_append['weight'] = entries[i].weight
+            to_append['s_blood_pressure'] = entries[i].s_blood_pressure
+            to_append['d_blood_pressure'] = entries[i].d_blood_pressure
+            to_append['gender'] = gender_lookup[entries[i].gender]
+            to_append['cholesterol'] = cholesterol_lookup[entries[i].cholesterol]
+            to_append['glucose'] = glucose_lookup[entries[i].glucose]
+            to_append['smoking'] = smoking_lookup[entries[i].smoking]
+            to_append['alcohol'] = alcohol_lookup[entries[i].alcohol]
+            to_append['physical'] = physical_lookup[entries[i].physical]
+            to_append['prediction'] = prediction_lookup[entries[i].prediction]
+            to_append['predicted_username'] = entries[i].predicted_username
+            to_append['predicted_on'] = entries[i].predicted_on
+            to_return.append(to_append)
             
-        return entries
+        return to_return
     except Exception as error:
         db.session.rollback()
         flash(error, "danger")
@@ -197,5 +205,3 @@ def remove_entry(id):
     except Exception as error:
         db.session.rollback()
         flash(error, "danger")
-
-    
