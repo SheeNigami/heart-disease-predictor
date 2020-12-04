@@ -1,5 +1,5 @@
 #1: Import libraries need for the test
-from application.models import Entry
+from application.models import Entry, User
 import datetime as datetime
 import pytest
 from flask import json
@@ -8,8 +8,8 @@ from flask import json
 
 # Validity testing
 @pytest.mark.parametrize("entrylist",[
-    [18000, 170, 70,  1, 100, 80, 1, 1, 1, 1, 2, 0], # Test basic integers
-    [13337, 180, 80,  1, 90, 70, 1, 1, 1, 1, 2, 0] # Test basic integers
+    [18000, 170, 70,  1, 100, 80, 1, 1, 1, 1, 1, 0], # Test basic integers
+    [13337, 180, 80,  1, 90, 70, 1, 1, 1, 1, 1, 0] # Test basic integers
 ])
 # Test Entry Class
 def test_EntryClass(entrylist,capsys):
@@ -47,11 +47,11 @@ def test_EntryClass(entrylist,capsys):
 # Expected Failsure testing for Entry class (range testing)
 @pytest.mark.xfail(reason='unexpected values in label encoded fields')
 @pytest.mark.parametrize("entrylist",[
-    [21.1, 200.2, 80.3, 0.4, 1.1, 70.7, 88.8, 1.1, 1.1, 1.9, 1.1, 2.1, 1.1]   #Test float arguments
-    [-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13] # Test negative 
+    [21.1, 200.2, 80.3, 0.4, 1.1, 70.7, 88.8, 1.1, 1.1, 1.9, 1.1, 2.1, 1.1],   #Test float arguments
+    [-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13], # Test negative 
     [17000, 170, 80, 4, 80, 100, 7, 8, 9, 10, 11, 12, 13] # Test labels that don't exist for label encoded variables
 ])
-def test_EntryClass(entrylist,capsys):
+def test_EntryClassFail(entrylist,capsys):
     with capsys.disabled():
         now = datetime.datetime.utcnow()
         new_entry = Entry(  age= entrylist[0], 
@@ -105,7 +105,7 @@ def test_UserClass(userlist, capsys):
     ['sheen', 'sheenhern'],
     ['asdfasdf', 'lskdjfsldkfjksdl']
 ])
-def test_UserClass(userlist, capsys):
+def test_UserClassFail(userlist, capsys):
     with capsys.disabled():
         now = datetime.datetime.utcnow()
         new_user = User(  username= entrylist[0], 
@@ -118,8 +118,8 @@ def test_UserClass(userlist, capsys):
 
 # Test add API (range testing)
 @pytest.mark.parametrize("entrylist",[
-    [17171, 171, 71,  1, 171, 71, 1, 1, 1, 1, 2, 0], # Test basic integers
-    [13337, 173, 73,  0, 73, 73, 1, 1, 1, 1, 2, 0] # Test basic integers
+    [17171, 171, 71,  1, 171, 71, 1, 1, 1, 1, 2, 0, 'sheen'], # Test basic integers
+    [13337, 173, 73,  0, 73, 73, 1, 1, 1, 1, 2, 0, 'asdfasdf'] # Test basic integers
 ])
 def test_addAPI(client, entrylist, capsys):
     with capsys.disabled():
@@ -134,7 +134,8 @@ def test_addAPI(client, entrylist, capsys):
                   'smoking' : entrylist[8], 
                   'alcohol' : entrylist[9], 
                   'physical' : entrylist[10], 
-                  'prediction' : entrylist[11] }
+                  'prediction' : entrylist[11],
+                  'predicted_username': entrylist[12] }
 
         response = client.post('/api/add', data=json.dumps(data), content_type="application/json")
 
@@ -163,9 +164,9 @@ def test_getAllEntryAPI(client, capsys):
 
 # Test predict api (consistency testing, always absent;)
 @pytest.mark.parametrize("entrylist",[
-    [13337, 180, 80,  1, 90, 70, 1, 1, 1, 1, 2] # Test basic integers
+    [13337, 180, 80,  1, 90, 70, 1, 1, 1, 1, 1] # Test basic integers
 ])
-def test_predictAPI(client, capsys): 
+def test_predictAPI(client, capsys, entrylist): 
     with capsys.disabled():
         data = {  'age': entrylist[0], 
                   'height' : entrylist[1],

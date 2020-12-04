@@ -29,14 +29,14 @@ def predict():
             age = form.age.data
             height = form.height.data
             weight = form.weight.data
-            gender = form.gender.data
+            gender = int(form.gender.data)
             s_blood_pressure = form.s_blood_pressure.data
             d_blood_pressure = form.d_blood_pressure.data
-            cholesterol = form.cholesterol.data
-            glucose = form.glucose.data
-            smoking = form.smoking.data
-            alcohol = form.alcohol.data
-            physical = form.physical.data
+            cholesterol = int(form.cholesterol.data)
+            glucose = int(form.glucose.data)
+            smoking = int(form.smoking.data)
+            alcohol = int(form.alcohol.data)
+            physical = int(form.physical.data)
 
             # Engineer feature engineered columns
             bmi = weight / ((height/100) ** 2)
@@ -45,8 +45,11 @@ def predict():
             X = [[age, gender, height, weight, s_blood_pressure, d_blood_pressure, cholesterol, glucose, smoking, alcohol, physical, bmi, avg_bp]]
             result = ai_model.predict(X)
             probability = round(ai_model.predict_proba(X)[0][int(result[0])] * 100, 2)
+            print(gender)
             new_entry = Entry( age=age, gender=gender, height=height, weight=weight, s_blood_pressure=s_blood_pressure, d_blood_pressure=d_blood_pressure, cholesterol=cholesterol, 
                                glucose=glucose, smoking=smoking, alcohol=alcohol, physical=physical, prediction=int(result[0]), predicted_on=datetime.utcnow(), predicted_username=current_user.username)
+            new_entry.gender = gender
+            print(new_entry.gender)
             add_entry(new_entry)
             if result[0] == 0:
                 flash(f"Prediction: {display_result[result[0]]}, Probability: {probability}%", "success")
@@ -169,26 +172,16 @@ def get_entries():
     prediction_lookup = {0: 'Absent', 1: 'Present'}
     try:
         entries = Entry.query.filter_by(predicted_username=current_user.username).all()
-        to_return = []
         for i in range(len(entries)): 
-            to_append = {}
-            to_append['age'] = entries[i].age
-            to_append['height'] = entries[i].height
-            to_append['weight'] = entries[i].weight
-            to_append['gender'] = cholesterol_lookup[entries[i].gender]
-            to_append['s_blood_pressure'] = entries[i].s_blood_pressure
-            to_append['d_blood_pressure'] = entries[i].d_blood_pressure
-            to_append['cholesterol'] = cholesterol_lookup[entries[i].cholesterol]
-            to_append['glucose'] = glucose_lookup[entries[i].glucose]
-            to_append['smoking'] = smoking_lookup[entries[i].smoking]
-            to_append['alcohol'] = alcohol_lookup[entries[i].alcohol]
-            to_append['physical'] = physical_lookup[entries[i].physical]
-            to_append['prediction'] = prediction_lookup[entries[i].prediction]
-            to_append['predicted_username'] = entries[i].predicted_username
-            to_append['predicted_on'] = entries[i].predicted_on
-            to_return.append(to_append)
+            entries[i].gender = gender_lookup[entries[i].gender]
+            entries[i].cholesterol = cholesterol_lookup[entries[i].cholesterol]
+            entries[i].glucose = glucose_lookup[entries[i].glucose]
+            entries[i].smoking = smoking_lookup[entries[i].smoking]
+            entries[i].alcohol = alcohol_lookup[entries[i].alcohol]
+            entries[i].physical = physical_lookup[entries[i].physical]
+            entries[i].prediction = prediction_lookup[entries[i].prediction]
             
-        return to_return
+        return entries
     except Exception as error:
         db.session.rollback()
         flash(error, "danger")

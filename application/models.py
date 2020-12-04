@@ -1,7 +1,7 @@
 from application import db
 import datetime as dt
 from sqlalchemy.orm import validates
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Integer, Float, String
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -60,10 +60,6 @@ class Entry(db.Model):
     def validates_prediction(self, key , prediction): 
         if not (prediction == 0 or prediction == 1):
             raise AssertionError("Value must be 0 or 1 (heart disease absent/present)")
-
-
-
-
 
 
 class User(UserMixin, db.Model):
