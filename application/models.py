@@ -52,10 +52,12 @@ class Entry(db.Model):
             raise AssertionError("Value must be 0 or 1 (drink alcohol or not)")
 
     @validates('physical')
+    def validates_physical(self, key , physical): 
         if not (physical == 0 or physical == 1):
             raise AssertionError("Value must be 0 or 1 (exercise or not)")
 
     @validates('prediction')
+    def validates_prediction(self, key , prediction): 
         if not (prediction == 0 or prediction == 1):
             raise AssertionError("Value must be 0 or 1 (heart disease absent/present)")
 
