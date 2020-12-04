@@ -4,13 +4,14 @@ import datetime as datetime
 import pytest
 from flask import json
  
-#Unit Test
-#2: Parametrize section contains the data for the test
+#Unit Tests
+
+# Validity testing
 @pytest.mark.parametrize("entrylist",[
-    [18000, 170, 70,  1, 100, 80, 1, 1, 1, 1, 2, 0],  #Test integer arguments
-    [21.1, 200.2, 80.3, 0.4, 1.1, 70.7, 88.8, 1.1, 1.1, 1.9, 1.1, 2.1, 1.1]   #Test float arguments
+    [18000, 170, 70,  1, 100, 80, 1, 1, 1, 1, 2, 0], # Test basic integers
+    [13337, 180, 80,  1, 90, 70, 1, 1, 1, 1, 2, 0] # Test basic integers
 ])
-#3: Write the test function pass in the arguments
+# Test Entry Class
 def test_EntryClass(entrylist,capsys):
     with capsys.disabled():
         now = datetime.datetime.utcnow()
@@ -41,6 +42,47 @@ def test_EntryClass(entrylist,capsys):
         assert new_entry.physical == entrylist[10]
         assert new_entry.prediction == entrylist[11]
         assert new_entry.predicted_on == now
+
+# Expected Failsure testing for Entry class
+@pytest.mark.xfail(reason='unexpected values in label encoded fields')
+@pytest.mark.parametrize("entrylist",[
+    [21.1, 200.2, 80.3, 0.4, 1.1, 70.7, 88.8, 1.1, 1.1, 1.9, 1.1, 2.1, 1.1]   #Test float arguments
+    [-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13] # Test negative 
+    [17000, 170, 80, 4, 80, 100, 7, 8, 9, 10, 11, 12, 13] # Test labels that don't exist for label encoded variables
+])
+def test_EntryClass(entrylist,capsys):
+    with capsys.disabled():
+        now = datetime.datetime.utcnow()
+        new_entry = Entry(  age= entrylist[0], 
+                            height = entrylist[1],
+                            weight= entrylist[2],
+                            gender = entrylist[3],
+                            s_blood_pressure  = entrylist[4],  
+                            d_blood_pressure = entrylist[5],
+                            cholesterol = entrylist[6],
+                            glucose = entrylist[7], 
+                            smoking = entrylist[8], 
+                            alcohol = entrylist[9], 
+                            physical = entrylist[10], 
+                            prediction = entrylist[11],
+                            predicted_on = now  ) 
+ 
+        assert new_entry.age == entrylist[0]
+        assert new_entry.height == entrylist[1]
+        assert new_entry.weight == entrylist[2]
+        assert new_entry.gender == entrylist[3]
+        assert new_entry.s_blood_pressure == entrylist[4]
+        assert new_entry.d_blood_pressure == entrylist[5]
+        assert new_entry.cholesterol == entrylist[6]
+        assert new_entry.glucose == entrylist[7]
+        assert new_entry.smoking == entrylist[8]
+        assert new_entry.alcohol == entrylist[9]
+        assert new_entry.physical == entrylist[10]
+        assert new_entry.prediction == entrylist[11]
+        assert new_entry.predicted_on == now
+
+
+
 
 
 # Test add API
@@ -82,3 +124,10 @@ def test_deleteAPI(client, id, capsys):
         response_body = json.loads(response.get_data(as_text=True))
         assert response_body['result'] == 'ok'
 
+
+def test_getAllEntryAPI(client, capsys):
+    response = client.get('/api/getAllEntry')
+    ret = json.loads(response.get_data(as_text=True))
+    assert response.status_code == 200
+    assert response.headers['Content-Type'] == "application/json"
+    assert 
