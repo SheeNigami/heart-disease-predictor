@@ -43,6 +43,7 @@ def test_EntryClass(entrylist,capsys):
         assert new_entry.prediction == entrylist[11]
         assert new_entry.predicted_on == now
 
+
 # Expected Failsure testing for Entry class
 @pytest.mark.xfail(reason='unexpected values in label encoded fields')
 @pytest.mark.parametrize("entrylist",[
@@ -82,7 +83,37 @@ def test_EntryClass(entrylist,capsys):
         assert new_entry.predicted_on == now
 
 
+# Unit test for User Class
+# Validity Testing
+@pytest.mark.parametrize('userlist', [
+    ['asdfasdf', 'lskdjfsldkfjksdl'], # Valid user
+    ['sheen', 'sheenhern'] # Valid user
+])
+def test_UserClass(userlist, capsys):
+    with capsys.disabled():
+        now = datetime.datetime.utcnow()
+        new_user = User(  username= entrylist[0], 
+                          password = entrylist[1],
+                          created_on = now  ) 
+ 
+        assert new_user.username == userlist[0]
+        assert new_user.password == userlist[1]
 
+
+@pytest.mark.xfail(reason='user already exists')
+@pytest.mark.parametrize("userlist",[
+    ['sheen', 'sheenhern'],
+    ['asdfasdf', 'lskdjfsldkfjksdl']
+])
+def test_UserClass(userlist, capsys):
+    with capsys.disabled():
+        now = datetime.datetime.utcnow()
+        new_user = User(  username= entrylist[0], 
+                          password = entrylist[1],
+                          created_on = now  ) 
+ 
+        assert new_user.username == userlist[0]
+        assert new_user.password == userlist[1]
 
 
 # Test add API
